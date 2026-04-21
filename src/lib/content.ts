@@ -20,7 +20,6 @@ function getAll(folder: string): any[] {
   return getContentFiles(folder).map((f) => parseFile(folder, f));
 }
 
-// Sort: items with explicit order first (ascending), then rest by date desc or filename
 function sortByOrderThenDate(items: Record<string, any>[]): Record<string, any>[] {
   const withOrder = items
     .filter((i) => i.order != null && i.order !== '')
@@ -47,7 +46,7 @@ export interface HeroSlide {
   order?: number;
 }
 
-export interface Plant {
+export interface Event {
   title: string;
   date: string;
   description: string;
@@ -105,21 +104,21 @@ export function getHeroSlides(): HeroSlide[] {
   return [...manual, ...fromGallery];
 }
 
-// ---------------- PLANTS (was events) ----------------
+// ---------------- EVENTS (USED AS PLANTS) ----------------
 
-export function getPlants(): Plant[] {
+export function getEvents(): Event[] {
   return getAll('events')
     .sort(
       (a, b) =>
         new Date(b.date).getTime() - new Date(a.date).getTime()
-    ) as Plant[];
+    ) as Event[];
 }
 
-export function getPlantPhotos(plant: Plant): string[] {
+export function getEventPhotos(event: Event): string[] {
   const photos: string[] = [];
-  if (plant.image) photos.push(plant.image);
-  if (plant.photos)
-    plant.photos.forEach((p) => {
+  if (event.image) photos.push(event.image);
+  if (event.photos)
+    event.photos.forEach((p) => {
       if (p && !photos.includes(p)) photos.push(p);
     });
   return photos;
