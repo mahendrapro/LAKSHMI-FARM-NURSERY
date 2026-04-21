@@ -12,8 +12,8 @@ function getContentFiles(folder: string) {
 
 function parseFile(folder: string, filename: string): any {
   const raw = fs.readFileSync(path.join(contentDir, folder, filename), 'utf-8');
-  const { data } = matter(raw);
-  return { ...data, _filename: filename };
+  const { data, content } = matter(raw);
+  return { ...data, content, _filename: filename };
 }
 
 function getAll(folder: string): any[] {
@@ -52,6 +52,15 @@ export interface Event {
   description: string;
   image?: string;
   photos?: string[];
+}
+
+export interface Blog {
+  title: string;
+  date: string;
+  author: string;
+  designation: string;
+  image?: string;
+  content: string;
 }
 
 export interface GalleryItem {
@@ -122,6 +131,16 @@ export function getEventPhotos(event: Event): string[] {
       if (p && !photos.includes(p)) photos.push(p);
     });
   return photos;
+}
+
+// ---------------- BLOG ----------------
+
+export function getBlogs(): Blog[] {
+  return getAll('blog')
+    .sort(
+      (a, b) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+    ) as Blog[];
 }
 
 // ---------------- GALLERY ----------------
