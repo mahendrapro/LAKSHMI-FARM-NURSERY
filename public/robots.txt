@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Sitemap: https://kadapa-tkd.vercel.app/sitemap.xml

@@ -1,0 +1,28 @@
+{
+  "name": "kadapa-tkd",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+"postbuild": "mkdir -p out/admin && cp public/admin/index.html out/admin/index.html && cp public/admin/config.yml out/admin/config.yml",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "swiper": "^11.1.4",
+    "gray-matter": "^4.0.3",
+    "yet-another-react-lightbox": "^3.21.6"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.6",
+    "postcss": "^8.4.40",
+    "autoprefixer": "^10.4.20",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.4"
+  }
+}

@@ -1,0 +1,127 @@
+backend:
+  name: github
+  repo: mahendrapro/kadapa-tkd
+  branch: main
+  base_url: https://kadapa-tkd-oauth.vercel.app
+
+site_url: https://kadapa-tkd.vercel.app
+
+media_folder: public/images
+public_folder: /images
+
+media_library:
+  max_file_size: 15728640
+
+collections:
+  - name: announcements
+    label: Announcements
+    folder: content/announcements
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Text, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, time_format: false }
+      - { label: Badge, name: badge, widget: select, options: [NEW, URGENT, UPDATE, INFO], default: NEW }
+      - { label: Pinned, name: pinned, widget: boolean, default: false }
+      - { label: Active, name: active, widget: boolean, default: true }
+      - { label: Link Type, name: link_type, widget: select, options: [none, url, pdf], default: none }
+      - { label: URL, name: link, widget: string, required: false }
+      - { label: PDF File, name: pdf, widget: file, required: false, media_folder: public/pdfs, public_folder: /pdfs }
+      - label: "Priority Order (optional)"
+        name: order
+        widget: number
+        required: false
+        hint: "Leave empty to sort by date. Set 1 for first, 2 for second. Pinned always shows before unpinned."
+        value_type: int
+        min: 1
+        max: 999
+
+  - name: events
+    label: Events
+    folder: content/events
+    create: true
+    slug: "{{year}}-{{month}}-{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Event Title, name: title, widget: string }
+      - { label: Date, name: date, widget: datetime, format: YYYY-MM-DD, time_format: false }
+      - { label: Description, name: description, widget: text }
+      - label: Event Photos
+        name: photos
+        widget: list
+        field: { label: Photo, name: image, widget: image }
+      - { label: Cover Image, name: image, widget: image, required: false }
+
+  - name: gallery
+    label: Gallery
+    folder: content/gallery
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Image, name: image, widget: image }
+      - { label: Caption, name: caption, widget: string, required: false }
+      - { label: Show in Hero Slider, name: show_in_hero, widget: boolean, default: false }
+      - label: "Priority Order (optional)"
+        name: order
+        widget: number
+        required: false
+        hint: "Leave empty to sort by date. Set 1 for first, 2 for second etc. Use unique numbers — duplicates will show in any order."
+        value_type: int
+        min: 1
+        max: 999
+
+  - name: hero
+    label: Hero Slides
+    folder: content/hero
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Subtitle, name: subtitle, widget: text }
+      - { label: Image, name: image, widget: image }
+      - { label: Button Text, name: button_text, widget: string, default: Join Training }
+      - { label: Button Link, name: button_link, widget: string, default: "https://wa.me/918522833600" }
+      - label: "Priority Order (optional)"
+        name: order
+        widget: number
+        required: false
+        hint: "Leave empty to use default order. Set 1 for first slide, 2 for second etc. Use unique numbers."
+        value_type: int
+        min: 1
+        max: 999
+
+  - name: videos
+    label: YouTube Videos
+    folder: content/videos
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: YouTube URL, name: url, widget: string, hint: "Paste full YouTube URL e.g. https://www.youtube.com/watch?v=xxxxx" }
+      - { label: Active, name: active, widget: boolean, default: true }
+      - label: "Priority Order (optional)"
+        name: order
+        widget: number
+        required: false
+        hint: "Leave empty for default order. Set 1 for first, 2 for second etc."
+        value_type: int
+        min: 1
+        max: 999
+
+  - name: settings
+    label: Site Settings
+    files:
+      - label: Site Settings
+        name: site
+        file: content/settings/site.md
+        fields:
+          - { label: Google Maps Embed URL, name: map_embed_url, widget: string, required: false, hint: "Go to Google Maps → Share → Embed a map → copy the src URL only" }

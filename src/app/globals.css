@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-red:  #C8102E;
+  --brand-blue: #1B3A8C;
+  --brand-gold: #D4A017;
+  --bg-light:   #F8F6F0;
+}
+
+/* ─── Base ─────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #F8F6F0;
+  color: #1A1A2E;
+}
+
+/* ─── Logo watermark (ULTRA LIGHT) ─────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: min(60vw, 600px);
+  height: min(60vw, 600px);
+
+  background-image: url('/images/logo.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  opacity: 0.025; /* very subtle */
+
+  filter: grayscale(100%) blur(0.5px);
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Optional: Hero watermark boost ───────────── */
+.hero-section {
+  position: relative;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+
+  width: min(65vw, 650px);
+  height: min(65vw, 650px);
+
+  background: url('/images/logo.png') center/contain no-repeat;
+
+  opacity: 0.05;
+  mix-blend-mode: screen;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Red/Blue top stripe ───────────────────────── */
+.belt-stripe {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    #C8102E 0%,
+    #C8102E 50%,
+    #1B3A8C 50%,
+    #1B3A8C 100%
+  );
+}
+
+/* ─── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F0EDE6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C8102E;
+  border-radius: 3px;
+}
+
+/* ─── Selection ─────────────────────────────────── */
+::selection {
+  background: #C8102E;
+  color: #fff;
+}
+
+/* ─── Card shadow ───────────────────────────────── */
+.card-pro {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.card-pro:hover {
+  box-shadow: 0 8px 32px rgba(200, 16, 46, 0.12);
+  border-color: rgba(200, 16, 46, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ─── Swiper overrides ─────────────────────────── */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #C8102E !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #C8102E !important;
+}
+
+.swiper-pagination-bullet {
+  background: rgba(0, 0, 0, 0.25) !important;
+}
+
+/* ─── Hero swiper (white dots) ─────────────────── */
+.hero-swiper .swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.5) !important;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  background: #fff !important;
+}
+
+/* ─── Event mini swiper ────────────────────────── */
+.event-mini-swiper .swiper-pagination {
+  bottom: 5px !important;
+}
+
+.event-mini-swiper .swiper-pagination-bullet {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+/* ─── News ticker ─────────────────────────────── */
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ─── Urgent badge pulse ───────────────────────── */
+@keyframes urgentPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.badge-urgent {
+  animation: urgentPulse 1.5s ease-in-out infinite;
+}
