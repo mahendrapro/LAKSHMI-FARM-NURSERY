@@ -36,6 +36,8 @@ function sortByOrderThenDate(items: Record<string, any>[]): Record<string, any>[
   return [...withOrder, ...withoutOrder];
 }
 
+// ---------------- TYPES ----------------
+
 export interface HeroSlide {
   title: string;
   subtitle: string;
@@ -45,7 +47,7 @@ export interface HeroSlide {
   order?: number;
 }
 
-export interface Event {
+export interface Plant {
   title: string;
   date: string;
   description: string;
@@ -82,61 +84,86 @@ export interface SiteSettings {
   map_embed_url?: string;
 }
 
+// ---------------- HERO ----------------
+
 export function getHeroSlides(): HeroSlide[] {
   const manual = sortByOrderThenDate(getAll('hero')) as HeroSlide[];
 
   const fromGallery = sortByOrderThenDate(
     getAll('gallery').filter((g) => g.show_in_hero)
   ).map((g) => ({
-    title: 'Kadapa Tae Kwon Do Club',
-    subtitle: (g.caption as string) || 'Training champions since 2010',
+    title: 'Lakshmi Farm Nursery',
+    subtitle:
+      (g.caption as string) ||
+      'Fresh Plants • Healthy Growth • Affordable Prices',
     image: g.image as string,
-    button_text: 'Join Training',
-    button_link: 'https://wa.me/918522833600?text=Hello%20Sir,%20I%20want%20to%20join%20Taekwondo%20training',
+    button_text: 'Explore Plants',
+    button_link:
+      'https://wa.me/91XXXXXXXXXX?text=Hi%20I%20am%20interested%20in%20plants',
   }));
 
   return [...manual, ...fromGallery];
 }
 
-export function getEvents(): Event[] {
+// ---------------- PLANTS (was events) ----------------
+
+export function getPlants(): Plant[] {
   return getAll('events')
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) as Event[];
+    .sort(
+      (a, b) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+    ) as Plant[];
 }
 
-export function getEventPhotos(event: Event): string[] {
+export function getPlantPhotos(plant: Plant): string[] {
   const photos: string[] = [];
-  if (event.image) photos.push(event.image);
-  if (event.photos) event.photos.forEach((p) => { if (p && !photos.includes(p)) photos.push(p); });
+  if (plant.image) photos.push(plant.image);
+  if (plant.photos)
+    plant.photos.forEach((p) => {
+      if (p && !photos.includes(p)) photos.push(p);
+    });
   return photos;
 }
+
+// ---------------- GALLERY ----------------
 
 export function getGallery(): GalleryItem[] {
   return sortByOrderThenDate(getAll('gallery')) as GalleryItem[];
 }
 
+// ---------------- ANNOUNCEMENTS ----------------
+
 export function getAnnouncements(): Announcement[] {
   return getAll('announcements')
     .filter((a) => a.active !== false)
     .sort((a, b) => {
-      // 1. Pinned always before unpinned
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
-      // 2. Within same group: explicit order takes priority
-      const aOrder = (a.order != null && a.order !== '') ? Number(a.order) : null;
-      const bOrder = (b.order != null && b.order !== '') ? Number(b.order) : null;
+
+      const aOrder =
+        a.order != null && a.order !== '' ? Number(a.order) : null;
+      const bOrder =
+        b.order != null && b.order !== '' ? Number(b.order) : null;
+
       if (aOrder !== null && bOrder !== null) return aOrder - bOrder;
       if (aOrder !== null) return -1;
       if (bOrder !== null) return 1;
-      // 3. No order set — sort by date descending
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
+
+      return (
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
     }) as Announcement[];
 }
+
+// ---------------- VIDEOS ----------------
 
 export function getVideos(): VideoItem[] {
   return sortByOrderThenDate(
     getAll('videos').filter((v) => v.active !== false && v.url)
   ) as VideoItem[];
 }
+
+// ---------------- SETTINGS ----------------
 
 export function getSiteSettings(): SiteSettings {
   const settingsPath = path.join(contentDir, 'settings', 'site.md');
